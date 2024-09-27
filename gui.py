@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QListWidget, QTextEdit, QVBoxLayout, QHBoxLayout, QPushButton, QWidget
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QListWidget, QTextEdit, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QApplication, QMainWindow, QPushButton, QMenu, QLabel
 from PyQt6.QtCore import Qt
 
 class PriceAlgorithmSimulator(QMainWindow):
@@ -14,9 +14,74 @@ class PriceAlgorithmSimulator(QMainWindow):
 
         # Top Bar
         top_bar = QLabel("Price Algorithm Simulator")
-        top_bar.setStyleSheet("background-color: red; color: black; font-size: 24px; padding: 10px;")
+        top_bar.setStyleSheet("background-color: #ab2328; color: black; font-size: 42px; margin: 0; padding: 10px; font-family: Georgia")
         top_bar.setAlignment(Qt.AlignmentFlag.AlignLeft)
         main_layout.addWidget(top_bar)
+        
+        # Menu Bar
+        menu_layout = QHBoxLayout()
+        
+        #File menu
+        file_layout = QVBoxLayout()
+        file_button = QPushButton("File", self)
+
+        file_menu = QMenu()
+
+        file_rewind = file_menu.addAction("Restart Window")
+        file_close = file_menu.addAction("Close")
+        file_help = file_menu.addAction("Help")
+        
+        file_rewind.triggered.connect(lambda: print("Restart window"))
+        file_close.triggered.connect(lambda: print("Close window"))
+        file_help.triggered.connect(lambda: print("Help"))
+
+        file_button.setMenu(file_menu)
+        file_layout.addWidget(file_button)
+        
+        menu_layout.addLayout(file_layout)
+        
+        
+        #import menu
+        import_layout = QVBoxLayout()
+        import_button = QPushButton("Import", self)
+
+        import_menu = QMenu()
+
+        import_comp = import_menu.addAction("Import New Competition")
+        import_algo = import_menu.addAction("Import New Algorithm")
+        
+        import_comp.triggered.connect(lambda: print("import Competition"))
+        import_algo.triggered.connect(lambda: print("import Algorithm"))
+
+        import_button.setMenu(import_menu)
+        import_layout.addWidget(import_button)
+        menu_layout.addLayout(import_layout)
+        
+        #Export menu
+        export_layout = QVBoxLayout()
+        export_button = QPushButton("Export", self)
+
+        export_menu = QMenu()
+
+        export_csv = export_menu.addAction(".csv")
+        export_txt = export_menu.addAction(".txt")
+        export_json = export_menu.addAction(".json")
+        
+        
+        export_csv.triggered.connect(lambda: print("Export csv"))
+        export_txt.triggered.connect(lambda: print("Export txt"))
+        export_json.triggered.connect(lambda: print("Export json"))
+        
+
+        export_button.setMenu(export_menu)
+        export_layout.addWidget(export_button)
+        menu_layout.addLayout(export_layout)
+        
+        
+        
+        
+        main_layout.addLayout(menu_layout)
+
 
         # Horizontal Layout for Body
         body_layout = QHBoxLayout()
@@ -26,7 +91,7 @@ class PriceAlgorithmSimulator(QMainWindow):
 
         # Competition List
         competition_label = QLabel("Select Competition")
-        competition_label.setStyleSheet("background-color: red; color: black; padding: 5px; font-size: 18px;")
+        competition_label.setStyleSheet("background-color: #ab2328; color: black; padding: 5px; font-size: 18px;")
         left_layout.addWidget(competition_label)
 
         competition_list = QListWidget()
@@ -35,7 +100,7 @@ class PriceAlgorithmSimulator(QMainWindow):
 
         # Player List
         player_label = QLabel("Select Players")
-        player_label.setStyleSheet("background-color: red; color: black; padding: 5px; font-size: 18px;")
+        player_label.setStyleSheet("background-color: #ab2328; color: black; padding: 5px; font-size: 18px;")
         left_layout.addWidget(player_label)
 
         player_list = QListWidget()
@@ -67,7 +132,7 @@ class PriceAlgorithmSimulator(QMainWindow):
 
         # Bottom Console Section
         console_label = QLabel("Console")
-        console_label.setStyleSheet("background-color: red; color: black; font-size: 18px; padding: 5px;")
+        console_label.setStyleSheet("background-color: #ab2328; color: black; font-size: 18px; padding: 5px;")
         main_layout.addWidget(console_label)
 
         console_output = QLabel("Running Simulation\nResults\nRuleBased1.py: 367\nDeepLearning.py: 867\nWould you like to export results (y/n):")
