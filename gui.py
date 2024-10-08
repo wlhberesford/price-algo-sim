@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QListWidget, QTextEdit, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QApplication, QMainWindow, QPushButton, QMenu, QLabel, QSizePolicy
+from PyQt6.QtWidgets import QGridLayout, QApplication, QMainWindow, QLabel, QListWidget, QTextEdit, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QApplication, QMainWindow, QPushButton, QMenu, QLabel, QSizePolicy
 from PyQt6.QtCore import Qt
 
 class PASGui(QMainWindow):
@@ -11,70 +11,25 @@ class PASGui(QMainWindow):
         self.setGeometry(100, 100, 1000, 600)
 
         # Main Layout
-        main_layout = QVBoxLayout()
+        main_layout = QGridLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
 
         header = self.header()
-
-
-        # Horizontal Layout for Body
-        body_layout = QHBoxLayout()
-        body_layout.setContentsMargins(0, 0, 0, 0)
-
-        # Left side - Competition and Player Selection
-        left_layout = QVBoxLayout()
-        left_layout.setContentsMargins(0, 0, 0, 0)
-
+        selection = self.selection_section()
+        sim = self.sim_visualiization()
+        notes = self.notes()
+        console = self.console()
         
+        main_layout.addLayout(header, 0,0,1,3)
+        main_layout.addLayout(selection, 1,0,4,1)
+        main_layout.addLayout(sim, 1,1,3,1)
+        main_layout.addLayout(notes,1,2,3,1 )
+        main_layout.addLayout(console,4, 1, 1, 2)
         
-        # Meta Right
-        meta_right = QVBoxLayout()
-        right_body_layout = QHBoxLayout()
-
-        # Middle - Placeholder for Graph Visualization
-        graph_label = QLabel()
-        graph_label.setStyleSheet("background-color: #333333; border: 1px solid black;")
-        graph_label.setMinimumSize(400, 300)
-        right_body_layout.addWidget(graph_label)
-
-        # Right Side - Notes Section
-        right_layout = QVBoxLayout()
-
-        notes_label = QLabel("Notes:")
-        notes_label.setStyleSheet("background-color: #ab2328; color: black; padding: 5px; font-size: 18px; font-family: Verdana; font-weight: bold")
-        right_layout.addWidget(notes_label)
-
-        notes_area = QTextEdit()
-        notes_area.setPlaceholderText("Players: ..., ...\nGame: ..., ...\nPayoff:___________")
-        notes_area.setStyleSheet("color: black; background-color: #9ea2a2; font-size: 18px; padding: 5px;")
+        for col in range(3):  # Set stretch for 3 columns
+            main_layout.setColumnStretch(col, 1)
         
-        right_layout.addWidget(notes_area)
-
-        right_body_layout.addLayout(right_layout)
-
-        # Bottom Console Section
-        console_layout = QVBoxLayout()
-        console_label = QLabel("Console")
-        console_label.setStyleSheet("background-color: #ab2328; color: black; padding: 5px; font-size: 18px; font-family: Verdana; font-weight: bold")
-        
-        console_layout.addWidget(console_label)
-
-        console_output = QLabel("Running Simulation\nResults\nRuleBased1.py: 367\nDeepLearning.py: 867\nWould you like to export results (y/n):")
-        console_output.setStyleSheet("background-color: #333333; color: white; padding: 5px;")
-        console_output.setMinimumHeight(50)
-        console_layout.addWidget(console_output)
-        
-        meta_right.addLayout(right_body_layout)
-        meta_right.addLayout(console_layout)
-        
-        meta_right.addWidget(console_output)
-        
-        
-        body_layout.addLayout(meta_right)
-        
-        main_layout.addLayout(body_layout)
-
         # Main widget to hold the layout
         container = QWidget()
         container.setLayout(main_layout)
@@ -97,7 +52,7 @@ class PASGui(QMainWindow):
         
         #File menu
         file_layout = QVBoxLayout()
-        file_button = QPushButton("File", gui)
+        file_button = QPushButton("File", self)
         file_button.setStyleSheet("color: #000;\
                                     margin: 0; \
                                     padding: 0px;\
@@ -121,7 +76,7 @@ class PASGui(QMainWindow):
         
         #import menu
         import_layout = QVBoxLayout()
-        import_button = QPushButton("Import", gui)
+        import_button = QPushButton("Import", self)
         import_button.setStyleSheet("color: #000;\
                                     margin: 0; \
                                     padding: 0px;\
@@ -142,7 +97,7 @@ class PASGui(QMainWindow):
         
         #Export menu
         export_layout = QVBoxLayout()
-        export_button = QPushButton("Export", gui)
+        export_button = QPushButton("Export", self)
         export_button.setStyleSheet("color: #000;\
                                     margin: 0; \
                                     padding: 0px;\
@@ -166,7 +121,8 @@ class PASGui(QMainWindow):
         menu_layout.addLayout(export_layout)
         
         header.addLayout(menu_layout)
-
+        
+        return header
 
     def selection_section(self):
         select = QVBoxLayout()
@@ -196,7 +152,45 @@ class PASGui(QMainWindow):
         
         return select
 
+    def sim_visualiization(self):
+        # Middle - Placeholder for Graph Visualization
+        graph_label = QLabel()
+        graph_label.setStyleSheet("background-color: #333333; border: 1px solid black;")
+        
+        graph_layout = QVBoxLayout()
+        graph_layout.addWidget(graph_label)
+        
+        return graph_layout
 
+    def notes(self):
+        # Right Side - Notes Section
+
+        notes_label = QLabel("Notes:")
+        notes_label.setStyleSheet("background-color: #ab2328; color: black; padding: 5px; font-size: 18px; font-family: Verdana; font-weight: bold")
+        notes_area = QTextEdit()
+        notes_area.setPlaceholderText("Players: ..., ...\nGame: ..., ...\nPayoff:___________")
+        notes_area.setStyleSheet("color: black; background-color: #9ea2a2; font-size: 18px; padding: 5px;")
+        
+        notes_layout = QVBoxLayout()
+        notes_layout.addWidget(notes_label)
+        notes_layout.addWidget(notes_area)
+        
+        return notes_layout
+        
+    def console(self):
+        # Bottom Console Section
+        console_layout = QVBoxLayout()
+        console_label = QLabel("Console")
+        console_label.setStyleSheet("background-color: #ab2328; color: black; padding: 5px; font-size: 18px; font-family: Verdana; font-weight: bold")
+        
+        console_layout.addWidget(console_label)
+
+        console_output = QLabel("Running Simulation\nResults\nRuleBased1.py: 367\nDeepLearning.py: 867\nWould you like to export results (y/n):")
+        console_output.setStyleSheet("background-color: #333333; color: white; padding: 5px;")
+        console_output.setMinimumHeight(50)
+        console_layout.addWidget(console_output)
+        
+        return console_layout
 
 # Run the application
 app = QApplication(sys.argv)
