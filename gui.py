@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QGridLayout, QApplication, QMainWindow, QLabel, QListWidget, QTextEdit, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QApplication, QMainWindow, QPushButton, QMenu, QLabel, QSizePolicy
+from PyQt6.QtWidgets import QGridLayout, QApplication, QMainWindow, QLabel, QListWidget, QTextEdit, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QPushButton, QMenu, QSizePolicy
 from PyQt6.QtCore import Qt
 
 class PASGui(QMainWindow):
