@@ -26,9 +26,9 @@ class PriceAlgo:
         
     pa.update(episode_results)
         - updates pa.history
-        - episode_results[i] = {price: int, reward: float}
+        - episode_results[i] = {action: int, reward: float}
     
-    pa.clear_history()
+    pa.reset()
         - clears pa.history
     '''
     
@@ -36,7 +36,7 @@ class PriceAlgo:
     def __init__(self, pi: function, game: PriceGame, player: int):
         self.history = list()           # History of prev rounds
         self.id = player                # Algos player number in Price game
-        self.policy = pi                    # Policy for prices
+        self.policy = pi                # Policy for prices
         
     # returns new price action based on previouse observations
     def action(self, bounds: tuple) -> int:
@@ -51,7 +51,7 @@ class PriceAlgo:
         self.history.append(iteration)
         
     # Clears self.history
-    def clear_history(self):
+    def reset(self):
         self.history = list()
     
     

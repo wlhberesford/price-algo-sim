@@ -63,3 +63,6 @@ class PriceGame:
             
         return profits
    
+    # Resets Game for next episode
+    def reset(self) -> None:
+        self.actions = [None for i in range(self.players)]
