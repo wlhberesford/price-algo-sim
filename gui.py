@@ -6,6 +6,7 @@ class PASGui(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        #Make front end
         self.setWindowTitle("Price Algorithm Simulator")
         self.setStyleSheet("background-color: #9ea2a2;")
         self.setGeometry(100, 100, 1000, 600)
@@ -35,7 +36,7 @@ class PASGui(QMainWindow):
         container.setLayout(main_layout)
         self.setCentralWidget(container)
 
-
+    #visual Methods
     def header(self):
         header = QVBoxLayout()
         
@@ -191,6 +192,8 @@ class PASGui(QMainWindow):
         console_layout.addWidget(console_output)
         
         return console_layout
+
+
 
 # Run the application
 app = QApplication(sys.argv)
