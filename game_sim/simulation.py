@@ -1,6 +1,11 @@
 from price_game import PriceGame
 from price_algo import PriceAlgo
 import numpy as np
+import matplotlib as plt
+
+
+
+
 class Simulation:
     
     def __init__(self,game: PriceGame, players: dict):

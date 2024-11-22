@@ -59,7 +59,7 @@ class PriceGame:
         profits = [0 for c in range(self.players)]
         
         for p in range(self.players):
-            profits[p]= self.profit(player = p, choices = self.choices)
+            profits[p]= self.profit(player = p, choices = self.actions)
             
         return profits
    

@@ -1,10 +1,43 @@
 import sys
-from PyQt6.QtWidgets import QGridLayout, QApplication, QMainWindow, QLabel, QListWidget, QTextEdit, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QPushButton, QMenu, QSizePolicy
+from PyQt6.QtWidgets import QGridLayout, QApplication, QMainWindow, QLabel, QListWidget, QTextEdit, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QPushButton, QMenu, QAbstractItemView
 from PyQt6.QtCore import Qt
+import os
 
 class PASGui(QMainWindow):
     def __init__(self):
         super().__init__()
+        
+        #instance variables
+        
+        try:
+            # List only files in the folder
+            self.sims = [
+                file for file in os.listdir('./sims')
+                if os.path.isfile(os.path.join('./sims', file))
+            ]
+        except FileNotFoundError:
+            print(f"Error: The folder '{'./sims'}' does not exist.")
+            self.sims = []
+        except PermissionError:
+            print(f"Error: Permission denied to access '{'./sims'}'.")
+            self.sims = []
+            
+        try:
+            # List only files in the folder
+            self.algos = [
+                file for file in os.listdir('./algos')
+                if os.path.isfile(os.path.join('./algos', file))
+            ]
+        except FileNotFoundError:
+            print(f"Error: The folder '{'./algos'}' does not exist.")
+            self.algos = []
+        except PermissionError:
+            print(f"Error: Permission denied to access '{'./algos'}'.")
+            self.algos = []
+            
+        
+
+        
 
         #Make front end
         self.setWindowTitle("Price Algorithm Simulator")
@@ -35,6 +68,8 @@ class PASGui(QMainWindow):
         container = QWidget()
         container.setLayout(main_layout)
         self.setCentralWidget(container)
+        
+        
 
     #visual Methods
     def header(self):
@@ -61,10 +96,12 @@ class PASGui(QMainWindow):
                                     font-family: Arial;")        
         file_menu = QMenu()
 
+        file_run_sim = file_menu.addAction("Run Simulation")
         file_rewind = file_menu.addAction("Restart Window")
         file_close = file_menu.addAction("Close")
         file_help = file_menu.addAction("Help")
         
+        file_run_sim.triggered.connect(lambda: print(self.competition_list.currentItem().text()))
         file_rewind.triggered.connect(lambda: print("Restart window"))
         file_close.triggered.connect(lambda: print("Close window"))
         file_help.triggered.connect(lambda: print("Help"))
@@ -132,24 +169,25 @@ class PASGui(QMainWindow):
         competition_label.setStyleSheet("background-color: #ab2328; color: black; padding: 5px; font-size: 18px; font-family: Verdana; font-weight: bold")
         select.addWidget(competition_label)
 
-        competition_list = QListWidget()
-        competition_list.addItems(["- Bertrand.py", "- Cournot.py", "- Custom1.py", "- Custom2.py"])
-        competition_list.setStyleSheet("background-color: #9ea2a2;\
+        self.competition_list = QListWidget()
+        self.competition_list.addItems(self.sims)
+        self.competition_list.setStyleSheet("background-color: #9ea2a2;\
                                         font-family: Georgia ;\
                                         font-size: 18px")
-        select.addWidget(competition_list)
+        select.addWidget(self.competition_list)
 
         # Player List
         player_label = QLabel("Select Players")
         player_label.setStyleSheet("background-color: #ab2328; color: black; padding: 5px; font-size: 18px; font-family: Verdana; font-weight: bold")
         select.addWidget(player_label)
 
-        player_list = QListWidget()
-        player_list.addItems(["- DeepLearning.py", "- Regresion.py", "- Competitor.py", "- Rulebased1.py", "- Rulebased2.py"])
-        player_list.setStyleSheet("background-color: #9ea2a2;\
+        self.player_list = QListWidget()
+        self.player_list.addItems(self.algos)
+        self.player_list.setStyleSheet("background-color: #9ea2a2;\
                                         font-family: Georgia ;\
                                         font-size: 18px")
-        select.addWidget(player_list)
+        self.player_list.setSelectionMode(QAbstractItemView.SelectionMode.MultiSelection)
+        select.addWidget(self.player_list)
         
         return select
 
@@ -193,6 +231,8 @@ class PASGui(QMainWindow):
         
         return console_layout
 
+
+    
 
 
 # Run the application
