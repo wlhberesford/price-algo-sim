@@ -1,5 +1,3 @@
-from price_game import PriceGame 
-
 
 class PriceAlgo:
     '''
@@ -33,7 +31,7 @@ class PriceAlgo:
     '''
     
     # init new PriceAlgo object
-    def __init__(self, pi: function, game: PriceGame, player: int):
+    def __init__(self, pi: callable, player: int):
         self.history = list()           # History of prev rounds
         self.id = player                # Algos player number in Price game
         self.policy = pi                # Policy for prices

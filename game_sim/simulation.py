@@ -1,7 +1,7 @@
 from price_game import PriceGame
 from price_algo import PriceAlgo
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 
 

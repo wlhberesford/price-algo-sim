@@ -2,6 +2,12 @@ import sys
 from PyQt6.QtWidgets import QGridLayout, QApplication, QMainWindow, QLabel, QListWidget, QTextEdit, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QPushButton, QMenu, QAbstractItemView
 from PyQt6.QtCore import Qt
 import os
+import importlib.util
+
+from game_sim.price_game import PriceGame 
+from game_sim.price_algo import PriceAlgo 
+from game_sim.simulation import Simulation
+
 
 class PASGui(QMainWindow):
     def __init__(self):
@@ -101,7 +107,7 @@ class PASGui(QMainWindow):
         file_close = file_menu.addAction("Close")
         file_help = file_menu.addAction("Help")
         
-        file_run_sim.triggered.connect(lambda: print(self.competition_list.currentItem().text()))
+        file_run_sim.triggered.connect(self.run_sim)
         file_rewind.triggered.connect(lambda: print("Restart window"))
         file_close.triggered.connect(lambda: print("Close window"))
         file_help.triggered.connect(lambda: print("Help"))
@@ -232,7 +238,40 @@ class PASGui(QMainWindow):
         return console_layout
 
 
-    
+    def run_sim(self):
+        game_str = self.competition_list.currentItem().text()
+        games_str = [item.text() for item in self.player_list.selectedItems()]
+        if len(games_str) == 1:
+            games_str.append(games_str[0])
+            
+        bounds, reward = import_game("sims/"+games_str)
+            
+def import_game(filepath):
+    """
+    Dynamically imports a Python file by its filepath.
+
+    Args:
+        filepath (str): The path to the Python file.
+
+    Returns:
+        module: The imported module.
+    """
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"The file '{filepath}' does not exist.")
+    if not filepath.endswith(".py"):
+        raise ValueError(f"The file '{filepath}' is not a Python file.")
+
+    # Extract module name from the file path
+    module_name = os.path.splitext(os.path.basename(filepath))[0]
+
+    # Load the module dynamically
+    spec = importlib.util.spec_from_file_location(module_name, filepath)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.Bounds, module.reward    
+        
+        
+        
 
 
 # Run the application

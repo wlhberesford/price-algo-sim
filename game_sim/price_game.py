@@ -25,7 +25,7 @@ class PriceGame:
     
     '''
     # init new PriceGame object
-    def __init__(self, players: int, action_space: tuple, reward: function):
+    def __init__(self, players: int, action_space: tuple, reward: callable):
         self.players = players
         self.action_space = action_space        
         self.actions = [None for i in range(players)]
