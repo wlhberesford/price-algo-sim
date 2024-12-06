@@ -33,6 +33,7 @@ class PriceGame:
         # Test if valid reward function
         try:
             p = reward(player = 0, actions = [random.randint(action_space[0], action_space[1]) for i in range (self.players)])
+            print(p, type(reward))
             if type(p) != float:
                 raise Exception(f"reward() return type error (reward -> {type(p)})")
             self.reward = reward

@@ -4,8 +4,8 @@ from PyQt6.QtCore import Qt
 import os
 import importlib.util
 
-# from game_sim.price_game import PriceGame 
-# from game_sim.price_algo import PriceAlgo 
+from game_sim.price_game import PriceGame 
+from game_sim.price_algo import PriceAlgo 
 # from game_sim.simulation import Simulation
 
 
@@ -240,11 +240,13 @@ class PASGui(QMainWindow):
 
     def run_sim(self):
         game_str = self.competition_list.currentItem().text()
-        games_str = [item.text() for item in self.player_list.selectedItems()]
-        if len(games_str) == 1:
-            games_str.append(games_str[0])
+        algos_str = [item.text() for item in self.player_list.selectedItems()]
+        if len(algos_str) == 1:
+            algos_str.append(algos_str[0])
+        
             
-        bounds, reward = import_game("sims/"+games_str)
+        game = import_game("./sims/"+game_str)
+        print(algos_str)
             
 def import_game(filepath):
     """
@@ -256,8 +258,9 @@ def import_game(filepath):
     Returns:
         module: The imported module.
     """
-    if not os.path.exists(filepath):
-        raise FileNotFoundError(f"The file '{filepath}' does not exist.")
+    # if not os.path.exists(filepath):
+    #     print(os.getcwd())
+    #     raise FileNotFoundError(f"The file '{filepath}' does not exist.")
     if not filepath.endswith(".py"):
         raise ValueError(f"The file '{filepath}' is not a Python file.")
 
@@ -268,7 +271,29 @@ def import_game(filepath):
     spec = importlib.util.spec_from_file_location(module_name, filepath)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    return module.Bounds, module.reward    
+    
+    game = PriceGame(2, module.BOUNDS, module.reward )
+    return game
+
+def import_algos(filepaths):
+    algos = list()
+    
+    for f in filepaths:
+        if not f.endswith(".py"):
+            raise ValueError(f"The file '{f}' is not a Python file.")
+
+        # Extract module name from the file path
+        module_name = os.path.splitext(os.path.basename(f))[0]
+
+        # Load the module dynamically
+        spec = importlib.util.spec_from_file_location(module_name, f)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        
+        algos.append( PriceAlgo(2, module.policy, len(algos)-1))
+        
+    return algos
+    
         
         
         
