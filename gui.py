@@ -4,9 +4,9 @@ from PyQt6.QtCore import Qt
 import os
 import importlib.util
 
-from game_sim.price_game import PriceGame 
-from game_sim.price_algo import PriceAlgo 
-from game_sim.simulation import Simulation
+# from game_sim.price_game import PriceGame 
+# from game_sim.price_algo import PriceAlgo 
+# from game_sim.simulation import Simulation
 
 
 class PASGui(QMainWindow):
