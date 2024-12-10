@@ -19,9 +19,9 @@ def reward(player: int, actions: list):
     if actions[player] != min_price:
         return 0
     elif min_count == 2:
-        return (min_price-C)*demand(min_price)/2
+        return (min_price-C)*demand(min_price)/2.0
     else:
-        return (min_price-C)*demand(min_price)
+        return (min_price-C)*demand(min_price) * 1.0
         
     
 def demand(price: int):

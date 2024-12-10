@@ -37,7 +37,8 @@ class PriceGame:
             if type(p) != float:
                 raise Exception(f"reward() return type error (reward -> {type(p)})")
             self.reward = reward
-        except:
+        except Exception as e:
+            print(e)
             raise Exception("reward() parameter error")
             
     # Store action from player 
